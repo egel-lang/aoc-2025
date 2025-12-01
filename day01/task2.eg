@@ -1,0 +1,17 @@
+# Advent of Code (AoC) - day 1, task 2
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars)
+
+def dial = 
+    [(I,J) ("L",K) -> if K > 100 then let (I,J) = dial (I,J) ("L",K - 100) in (I,J+1) 
+                      else if I == 0 then (100-K,J) 
+                      else let I = I - K in if I < 0 then (I+100,J+1) else if I == 0 then (I,J+1) else (I,J)
+    |(I,J) ("R",K) -> if K > 100 then let (I,J) = dial (I,J) ("R",K - 100) in (I,J+1) 
+                      else if I == 0 then (K,J) 
+                      else let I = I + K in if I >= 100 then (I - 100,J+1) else (I,J)]
+
+def main =
+    read_lines stdin |> map (Regex::matches (Regex::compile "R|L|[0-9]+")) |> map [{X,Y} -> (X, to_int Y)]
+    |> foldl dial (50,0) |> snd 

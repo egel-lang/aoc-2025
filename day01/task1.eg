@@ -1,0 +1,13 @@
+# Advent of Code (AoC) - day 1, task 1
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars)
+
+def dial = 
+    [M ("L",N) -> ((M-N)+100)%100
+    |M ("R",N) -> ((N+M)+100)%100]
+
+def main =
+    read_lines stdin |> map (Regex::matches (Regex::compile "R|L|[0-9]+")) |> map [{X,Y} -> (X, to_int Y)]
+    |> scanl dial 50 |> filter ((==) 0) |> length
