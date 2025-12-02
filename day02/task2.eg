@@ -6,5 +6,5 @@ using System, OS, List, String (from_chars, to_chars)
 
 def main =
     let RE = Regex::compile "^(.+)\\1+$" in
-    read_line stdin |> Regex::matches (Regex::compile "[0-9]+") |> map to_int |> chunks 2 |> map [{X,Y} -> from_to X Y]
-    |> flatten |> filter (do to_text |> Regex::match RE) |> sum
+    read_line stdin |> Regex::matches (Regex::compile "[0-9]+") |> map to_int |> chunks 2 
+    |> flatmap [{X,Y} -> from_to X Y] |> filter (do to_text |> Regex::match RE) |> sum
