@@ -1,0 +1,12 @@
+# Advent of Code (AoC) - day 2, task 1
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars)
+
+def rep =
+    do to_text |> to_chars |> [A -> let (B,C) = split_at ((length A)/2) A in B == C]
+
+def main =
+    read_line stdin |> Regex::matches (Regex::compile "[0-9]+") |> map to_int |> chunks 2 |> map [{X,Y} -> (X,Y)]
+    |> flatmap (uncurry from_to) |> filter rep |> sum
