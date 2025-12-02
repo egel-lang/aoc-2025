@@ -4,12 +4,7 @@ import "prelude.eg"
 
 using System, OS, List, String (from_chars, to_chars)
 
-def same = [{} -> false |{X} -> false |{X,Y} -> (X == Y)|{X,Y,Z|XX} -> (X == Y) && [_ -> same {Y,Z|XX}]]
-
-def rep =
-    do to_text |> to_chars |> \DD -> let L = length DD in 
-       from_to 1 (maximum {L/2, 1}) |> filter [N -> (L%N) == 0] |> map [N -> chunks N DD |> same] |> any id
-
 def main =
+    let RE = Regex::compile "^(.+)\\1+$" in
     read_line stdin |> Regex::matches (Regex::compile "[0-9]+") |> map to_int |> chunks 2 |> map [{X,Y} -> from_to X Y]
-    |> flatten |> filter rep |> sum
+    |> flatten |> filter (do to_text |> Regex::match RE) |> sum

@@ -1,0 +1,15 @@
+# Advent of Code (AoC) - day 2, task 2
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars)
+
+def same = [{} -> false |{X} -> false |{X,Y} -> (X == Y)|{X,Y,Z|XX} -> (X == Y) && [_ -> same {Y,Z|XX}]]
+
+def rep =
+    do to_text |> to_chars |> \DD -> let L = length DD in 
+       from_to 1 (maximum {L/2, 1}) |> filter [N -> (L%N) == 0] |> map [N -> chunks N DD |> same] |> any id
+
+def main =
+    read_line stdin |> Regex::matches (Regex::compile "[0-9]+") |> map to_int |> chunks 2 |> map [{X,Y} -> from_to X Y]
+    |> flatten |> filter rep |> sum
