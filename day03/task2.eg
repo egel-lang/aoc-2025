@@ -1,0 +1,13 @@
+# Advent of Code (AoC) - day 3, task 1
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars), D = Dict
+
+def init = [N -> zip (from_to 0 N) (repeat (N+1) 0) |> D::from_list]
+
+def step = [D I -> map [N -> D::set D N (max0 (D::get D (N - 1) * 10 + I) (D::get D N))] (from_to 12 1); D]
+
+def main =
+    read_lines stdin |> map (do to_chars |> map to_int)
+    |> map [L -> foldl step (init 12) L] |> map [D -> D::get D 12] |> sum
