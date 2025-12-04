@@ -1,0 +1,14 @@
+# Advent of Code (AoC) - day 4, task 1
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars), D = Dict
+
+val dirs = {(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)}
+
+def neighbours = [D P -> map (add P) dirs |> filter (D::has D) |> foldl [N P -> if D::get D P == '@' then N+1 else N] 0]
+
+def main =
+    read_lines stdin |> map to_chars |> Dict::from_lists 
+    |> [D -> map [P -> if D::get D P == '@' then neighbours D P else 9] (D::keys D)]
+    |> filter [N -> N < 4] |> length

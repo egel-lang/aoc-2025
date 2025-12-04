@@ -1,0 +1,20 @@
+# Advent of Code (AoC) - day 4, task 2
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars), D = Dict
+
+val dirs = {(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)}
+
+def neighbours = [D P -> if D::get D P == '@' 
+    then map (add P) dirs |> filter (D::has D) |> foldl [N P -> if D::get D P == '@' then N+1 else N] 0
+    else -1]
+
+def step =
+    [D -> foldl [D0 P -> if neighbours D P < 4 then D::set D0 P '.' else D::set D0 P '@'] D::dict (D::keys D)]
+
+def count = do D::to_list |> filter [(_,'@') -> true | _ -> false] |> length
+
+def main =
+    read_lines stdin |> map to_chars |> D::from_lists 
+    |> [D0 -> let D1 = iter_fix step D0 in count D0 - count D1]
