@@ -1,0 +1,13 @@
+# Advent of Code (AoC) - day 5, task 1
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars), R = Regex
+
+def parse =
+    do split_on "" |> [{XX,YY} -> (map (do R::matches (R::compile "[0-9]+") |> map to_int |> list_to_tuple) XX, map to_int YY)]
+
+def pred = foldl [P (I,J) -> [N -> ((I <= N) && [_ -> (N <= J)]) || [_ -> P N]]] [_ -> false]
+
+def main =
+    read_lines stdin |> parse |> [(XX,YY) -> filter (pred XX) YY] |> length

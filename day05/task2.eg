@@ -1,0 +1,18 @@
+# Advent of Code (AoC) - day 5, task 2
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars), R = Regex
+
+def parse =
+    do split_on "" |> [{XX,_} -> map (do R::matches (R::compile "[0-9]+") |> map to_int |> list_to_tuple) XX]
+
+def merge =
+    [(I,J) {} -> {(I,J)}
+    |(I,J) {(M,N)|RR} ->
+        if J < M then {(I,J),(M,N)|RR}
+        else if I > N then {(M,N)|merge (I,J) RR}
+        else merge (min0 I M, max0 J N) RR] 
+
+def main =
+    read_lines stdin |> parse |> foldl [RR R -> merge R RR] {} |> map [(I,J) -> 1 + J - I] |> sum
