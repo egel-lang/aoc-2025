@@ -2,7 +2,7 @@
 
 import "prelude.eg"
 
-using System, OS, List, String (from_chars, to_chars), R = Regex
+using System, OS, List, String (from_chars, to_chars)
 
 def main =
     read_lines stdin |> map to_chars |> [L -> [(L0,L1) -> 
