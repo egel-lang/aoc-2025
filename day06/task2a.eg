@@ -1,0 +1,12 @@
+# Advent of Code (AoC) - day 6, task 2
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars)
+
+def go = [{X|XX} -> 
+    ['*' -> map (do from_chars |> to_int) {init X|XX} |> product 
+    |'+' -> map (do from_chars |> to_int) {init X|XX} |> sum] (last X)] 
+
+def main =
+    read_lines stdin |> map to_chars |> transpose |> split_when (all ((==) ' ')) |> map go |> sum
