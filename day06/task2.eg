@@ -6,7 +6,7 @@ using System, OS, List, String (from_chars, to_chars), R = Regex
 
 def main =
     read_lines stdin |> map to_chars |> [L -> [(L0,L1) -> 
-        (filter ((/=)' ') L1 |> map ['+' -> (+)|'*' -> (*)] |> reverse,
-        transpose L0 |> map (do from_chars |> to_int) |> foldl [{X|XX} 0 -> {{},X|XX}|{X|XX} N -> {{N|X}|XX}] {{}})
+        (filter ((/=)' ') L1 |> map ['+' -> (+)|'*' -> (*)],
+        transpose L0 |> map (do from_chars |> to_int) |> split_on 0)
         ] (init L, last L)]
     |> uncurry zip |> map (uncurry reduce) |> sum
