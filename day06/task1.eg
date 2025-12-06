@@ -1,0 +1,11 @@
+# Advent of Code (AoC) - day 6, task 1
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars), R = Regex
+
+def parse =
+    do map (do R::matches (R::compile "[0-9]+|\\*|\\+") |> map ["+" ->(+)|"*" ->(*)|N -> to_int N])
+
+def main =
+    read_lines stdin |> parse |> transpose |> map reverse |> map [{OP|NN} -> reduce OP NN] |> sum
