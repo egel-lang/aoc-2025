@@ -1,0 +1,21 @@
+# Advent of Code (AoC) - day 7, task 1
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars), R = Regex
+
+def start = do Dict::to_list |> filter (do snd |> ((==) 'S')) |> head |> fst
+
+def track =
+    [D XX {} -> XX
+    |D XX YY -> 
+        printf "XX: {} YY: {}\n" XX YY;
+        foldl [(XX,YY) P -> 
+        if Dict::has D P then if Dict::get D P == '^' then ({P|XX},{add (0,-1) P,add (0,1) P|YY})
+                              else (XX,{P|YY})
+        else (XX,YY)] (XX,{}) (map (add (2,0)) YY)
+        |> [(XX,YY) -> track D (unique XX) (unique YY)]]
+
+def main =
+    read_lines stdin |> map to_chars |> Dict::from_lists
+    |> [D -> track D {} {start D}] |> length

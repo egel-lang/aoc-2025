@@ -1,0 +1,19 @@
+# Advent of Code (AoC) - day 7, task 2
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars), D = Dict
+
+def start = do D::to_list |> filter (do snd |> ((==) 'S')) |> head |> fst
+
+def track =
+    [D -> fix [F M P -> 
+        if D::has D P then 
+            if D::get D P == '^' then (D::memo M F (add (1,-1) P)) + (D::memo M F (add (1,1) P))
+            else D::memo M F (add (1,0) P)
+        else 1]]
+
+def main =
+    read_lines stdin |> map to_chars |> D::from_lists
+    |> [D -> let S = start D in track D D::dict S]
+
