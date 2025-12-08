@@ -1,0 +1,24 @@
+# Advent of Code (AoC) - day 8, task 2
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars), R = Regex
+
+def euclid = let F = [A B -> let N = (A - B) in N * N] in
+    [(X,Y,Z) (N,M,I) -> F X N + F Y M + F Z I]
+
+def parse = do map (R::matches (R::compile "[0-9]+")) |> map (do map to_int |> list_to_tuple)
+
+def pairs = [{} -> {}| {X|XX} -> map [Y -> (Y,X)] XX ++ pairs XX]
+
+def connect = foldl [CC (P,Q) -> 
+    let CC0 = let (PP,QQ) = filter_split [PP -> elem P PP || [_ -> elem Q PP]] CC 
+              in {[{X} -> X | {X,Y} -> unique (X ++ Y)] PP|QQ} 
+    in [{_} -> throw (P,Q)|CC -> CC] CC0]
+
+def main =
+    read_lines stdin |> parse |> [PP ->
+    try
+      let DD = pairs PP |> [PP -> zip (map (uncurry euclid) PP) PP] |> sort |> map snd in
+      connect (map singleton PP) DD 
+    catch [((A,_,_),(B,_,_)) -> A * B] ]
