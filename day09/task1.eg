@@ -1,0 +1,15 @@
+# Advent of Code (AoC) - day 9, task 1
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars), R = Regex
+
+def area = [(X,Y) (N,M) -> (abs0 (X - N) + 1) * (abs0 (Y - M) + 1)]
+
+def parse = do map (R::matches (R::compile "[0-9]+")) |> map (do map to_int |> list_to_tuple)
+
+def pairs = [{} -> {}| {X|XX} -> map [Y -> (Y,X)] XX ++ pairs XX]
+
+def main =
+    read_lines stdin |> parse |> 
+       pairs |> [PP -> zip (map (uncurry area) PP) PP] |> sort |> last |> fst

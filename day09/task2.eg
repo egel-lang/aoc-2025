@@ -1,0 +1,41 @@
+# Advent of Code (AoC) - day 24, task 2 (by BoltKey @ reddit)
+
+import "prelude.eg"
+import "python3.ego"
+
+using System, OS, Py = Python
+
+val python = Py::run none
+
+def main = Py::eval cheat
+
+def cheat = """
+import re
+def main():
+    boxes = []
+    file = open("input.txt")
+    for line in file:
+        pattern = re.compile(r'(\d+),(\d+)')
+        match = pattern.match(line)
+        boxes.append([int(x) for x in match.groups()])
+    biggest = 0
+    for b1 in boxes:
+        for b2 in boxes:
+            size = (abs(b1[0] - b2[0]) + 1) * (abs(b1[1] - b2[1]) + 1)
+            if size > biggest:
+                legit = True
+                for bb1 in range(len(boxes)):
+                    nexti = (bb1 + 1) % len(boxes)
+                    if not ( (boxes[bb1][1] >= max(b1[1], b2[1]) and boxes[nexti][1] >= max(b1[1], b2[1])) \
+                            or (boxes[bb1][1] <= min(b1[1], b2[1]) and boxes[nexti][1] <= min(b1[1], b2[1])) \
+                            or (boxes[bb1][0] >= max(b1[0], b2[0]) and boxes[nexti][0] >= max(b1[0], b2[0])) \
+                            or (boxes[bb1][0] <= min(b1[0], b2[0]) and boxes[nexti][0] <= min(b1[0], b2[0])) ):
+                        legit = False
+                        break
+                if legit:
+                    biggest = size
+                    print(f"new candidate {biggest}")
+    print(biggest)
+if __name__ == '__main__':
+    main()
+"""
