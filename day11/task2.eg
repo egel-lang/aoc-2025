@@ -1,0 +1,20 @@
+# Advent of Code (AoC) - day 11, task 2
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars), R = Regex, D = Dict
+
+def parse = do R::matches (R::compile "[a-z]+")
+
+def count = 
+    [D E -> fix [F M X -> 
+        if X == E then 1
+        else if Dict::has D X then map [Y -> D::memo M F Y] (Dict::get D X) |> sum
+        else 0 ]]
+
+def main =
+    read_lines stdin |> map parse |> foldl [D {X|YY} -> Dict::set D X YY] Dict::dict |>
+    let F = [D B E -> count D E D::dict B] in
+    [D -> (F D "dac" "out" * F D "fft" "dac" * F D "svr" "fft") +
+          (F D "fft" "out" * F D "dac" "fft" * F D "svr" "dac")]
+    
