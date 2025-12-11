@@ -1,0 +1,23 @@
+# Advent of Code (AoC) - day 10, task 1
+
+import "prelude.eg"
+
+using System, OS, List, String (from_chars, to_chars), R = Regex, D = Dict
+
+def re0 = R::matches (R::compile "[\\[\\(\\{][.#0-9,]+[\\]\\)\\}]")
+def re1 = R::matches (R::compile "[.#]")
+def re2 = R::matches (R::compile "[0-9]+")
+def parse = do re0 |> [LL -> (re1 (head LL), map (do re2 |> map to_int) (tail (init LL)))]
+
+def toggle = [0 {"."|LL} -> {"#"|LL} |0 {"#"|LL} -> {"."|LL} |N {L|LL} -> {L|toggle (N - 1) LL}]
+
+def press = [LL B -> foldl [LL N -> toggle N LL] LL B]
+
+def presses = [LL BB -> printf "{} {}\n" LL BB; foldl press LL BB]
+
+def main =
+    read_lines stdin |> map parse |> map [(LL,BB) -> 
+        map [BB -> (length BB, presses (repeat (length LL) ".")  BB)] (power BB)
+        |> (filter (do snd |> ((==) LL))) ]
+    |> map (do map fst |> minimum) |> sum
+
